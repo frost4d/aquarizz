@@ -1,0 +1,54 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  .overlayContainer {
+    z-index: 9;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .headerOverlay {
+    margin: 0 0 2em 0;
+  }
+  .overlayCard {
+    background-color: #ffffff;
+    padding: 5em 7em;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .inputBoxes {
+    margin: 1em 0;
+  }
+  
+  input {
+    border: none;
+    border-radius: 40px;
+    padding: 0.8em 1.3em;
+    background-color: #ebebeb;
+  }
+  input:focus {
+    outline: none;
+  }
+  
+  .registerBtnForm {
+    margin: 2em 0 0 0;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .close {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
