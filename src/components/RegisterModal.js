@@ -1,5 +1,8 @@
 import "./RegisterModal.css";
 import Button from "./Button.js";
+import { auth } from "../config/firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 const RegisterModal = (props) => {
   if (!props.show) {
     return null;
@@ -43,4 +46,24 @@ const RegisterModal = (props) => {
     </div>
   );
 };
+
+// backend signupform
+const signupForm = document.querySelector('.registerForm')
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  const email = signupForm.email.value
+  const password = signupForm.password.value
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      console.log('user created:', cred.user)
+      signupForm.reset()
+    })
+    .catch((err) => {
+      console.log((err.message))
+  })
+})
+
+
 export default RegisterModal;
