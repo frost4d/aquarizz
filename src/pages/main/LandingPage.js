@@ -4,19 +4,15 @@ import Button from "../../components/Button.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Routes, Route, Link } from "react-router-dom";
-import {RegisterModal} from "../../components/RegisterModal";
-//backend import
+import { RegisterModal } from "../../components/RegisterModal";
 import { getDocs, collection } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../../config/firebase";
-import { Post } from "./post";
-import { auth, provider } from "../config/firebase";
+import React, { useEffect, useState } from "react";
+import { db, auth, provider } from "../../config/firebase"; // Added 'provider' to import
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-export default function LandingPage() {
+const LandingPage = () => {
   const [show, setShow] = useState(false);
-  
   const navigate = useNavigate();
 
   const signInWithGoogle = async () => {
@@ -42,10 +38,8 @@ export default function LandingPage() {
       <main className="hero">
         <div className="heroText">
           <span className="heroHeader">
-            <p>
-              <h2>Connecting</h2>
-              <span className="italic">for the Love of Healthy Fish</span>
-            </p>
+            <h2>Connecting</h2>
+            <span className="italic">for the Love of Healthy Fish</span>
           </span>
           <span className="heroFooter">
             A Social media community to connect and sell your items.
@@ -86,30 +80,29 @@ export default function LandingPage() {
       <footer className="footer"></footer>
 
       <Routes>
-        <Route path="/" element={LandingPage} />
+        <Route path="/" element={<LandingPage />} /> {/* Wrapped the component with {} */}
       </Routes>
     </div>
   );
-}
+};
 
-//backend
-export interface Post {
-  id: string;
-  userId: string;
-  title: string;
-  username: string;
-  description: string;
-}
+const newPost = {
+  id: "string",
+  userId: "string",
+  title: "string",
+  username: "string",
+  description: "string",
+};
 
-export const Main = () => {
-  const [postsList, setPostsList] = useState<Post[] | null>(null);
+console.log(newPost.title);
+
+const Main = () => {
+  const [postsList, setPostsList] = React.useState(null);
   const postsRef = collection(db, "posts");
 
   const getPosts = async () => {
     const data = await getDocs(postsRef);
-    setPostsList(
-      data.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as Post[]
-    );
+    setPostsList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   useEffect(() => {
@@ -118,9 +111,12 @@ export const Main = () => {
 
   return (
     <div>
-      {postsList?.map((post) => (
-        <Post post={post} />
-      ))}
+      {postsList &&
+        postsList.map((post) => {
+          return <PostComponent post={post} />; // Assuming PostComponent is defined somewhere
+        })}
     </div>
   );
 };
+
+export default LandingPage; // Exporting the LandingPage component
