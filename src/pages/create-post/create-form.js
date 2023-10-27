@@ -5,13 +5,9 @@ import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
-interface CreateFormData {
-  title: string;
-  description: string;
-}
-
-export const CreateForm = () => {
+const CreateForm = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -24,13 +20,13 @@ export const CreateForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateFormData>({
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const postsRef = collection(db, "posts");
 
-  const onCreatePost = async (data: CreateFormData) => {
+  const onCreatePost = async (data) => {
     await addDoc(postsRef, {
       ...data,
       username: user?.displayName,
@@ -41,12 +37,14 @@ export const CreateForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onCreatePost)}>
-      <input placeholder="Title..." {...register("title")} />
-      <p style={{ color: "red" }}> {errors.title?.message}</p>
-      <textarea placeholder="Description..." {...register("description")} />
-      <p style={{ color: "red" }}> {errors.description?.message}</p>
-      <input type="submit" className="submitForm" />
-    </form>
+    React.createElement("form", { onSubmit: handleSubmit(onCreatePost) },
+      React.createElement("input", { placeholder: "Title...", ...register("title") }),
+      React.createElement("p", { style: { color: "red" } }, errors.title?.message),
+      React.createElement("textarea", { placeholder: "Description...", ...register("description") }),
+      React.createElement("p", { style: { color: "red" } }, errors.description?.message),
+      React.createElement("input", { type: "submit", className: "submitForm" })
+    )
   );
 };
+
+export { CreateForm };
